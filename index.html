@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Archive | Sasha's Events</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,400;1,500&family=Space+Grotesk:wght@300;400;500;600&family=Space+Mono:wght@400&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --bg-black: #030303;
+    --card-bg: #0a0a0a;
+    --card-border: rgba(255, 255, 255, 0.08);
+    --text-main: #f4e9ff;
+    --text-muted: #8b9bb4;
+    --accent: #f2c14e; 
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background-color: var(--bg-black);
+    color: var(--text-main);
+    font-family: 'Space Grotesk', sans-serif;
+    line-height: 1.6;
+    overflow-x: hidden;
+    background-image: radial-gradient(circle at 50% 0%, #1a1025 0%, transparent 60%);
+  }
+
+  /* --- HERO HEADER --- */
+  .hero {
+    text-align: center;
+    padding: 60px 20px 40px;
+    position: relative;
+  }
+
+  .host-avatar-wrap {
+    width: 64px; height: 64px;
+    margin: 0 auto 16px;
+    border-radius: 50%;
+    padding: 2px;
+    background: linear-gradient(135deg, var(--accent), #d94f8c);
+    box-shadow: 0 4px 20px rgba(242, 193, 78, 0.15);
+  }
+
+  .host-avatar {
+    width: 100%; height: 100%;
+    border-radius: 50%; object-fit: cover;
+    background-color: var(--card-bg);
+    border: 2px solid var(--bg-black);
+  }
+
+  .hero h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 64px; font-weight: 400; font-style: italic;
+    color: #ffffff;
+    text-shadow: 0 4px 20px rgba(0,0,0,0.5);
+    margin-bottom: 8px;
+  }
+
+  .hero p {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px; text-transform: uppercase; letter-spacing: 0.25em;
+    color: var(--text-muted);
+  }
+
+  /* Mobile Jump Link (Hidden on Desktop) */
+  .mobile-jump-link {
+    display: none;
+    margin-top: 20px;
+    font-size: 13px;
+    color: var(--accent);
+    text-decoration: none;
+    border: 1px solid rgba(242, 193, 78, 0.4);
+    padding: 8px 20px;
+    border-radius: 999px;
+  }
+
+  /* --- TWO COLUMN DASHBOARD LAYOUT --- */
+  .dashboard-container {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr; /* Eras take slightly less space than Padlet */
+    gap: 60px;
+    max-width: 1400px;
+    margin: 0 auto 80px;
+    padding: 0 40px;
+    align-items: start;
+  }
+
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 38px;
+    font-style: italic;
+    font-weight: 400;
+    color: #ffffff;
+    margin-bottom: 12px;
+    border-bottom: 1px solid var(--card-border);
+    padding-bottom: 16px;
+  }
+
+  /* --- LEFT COLUMN: TIMELINE --- */
+  .timeline {
+    position: relative;
+    padding-left: 24px;
+    margin-top: 30px;
+  }
+
+  /* Single-sided line for the column layout */
+  .timeline::after {
+    content: ''; position: absolute;
+    width: 2px;
+    background: linear-gradient(to bottom, rgba(242, 193, 78, 0.6) 0%, rgba(242, 193, 78, 0.1) 100%);
+    top: 10px; bottom: 0; left: 0;
+  }
+
+  .timeline-node {
+    position: relative;
+    margin-bottom: 40px;
+    padding-left: 30px;
+  }
+
+  /* Glowing dot on the left line */
+  .timeline-node::before {
+    content: ''; position: absolute;
+    width: 12px; height: 12px;
+    left: -29px; /* Pull it back over the line */
+    top: 15px;
+    background-color: var(--bg-black);
+    border: 2px solid var(--accent);
+    border-radius: 50%;
+    z-index: 1;
+    box-shadow: 0 0 10px rgba(242, 193, 78, 0.6);
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+  }
+
+  .timeline-node:hover::before {
+    box-shadow: 0 0 20px rgba(242, 193, 78, 1);
+    transform: scale(1.3);
+    background-color: var(--accent);
+  }
+
+  /* Era Cards */
+  .card {
+    background-color: rgba(15, 15, 15, 0.6);
+    backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+    border: 1px solid var(--card-border);
+    border-radius: 16px; overflow: hidden;
+    transition: transform 0.4s ease, border-color 0.4s ease;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  }
+
+  .card:hover {
+    transform: translateY(-5px);
+    border-color: rgba(242, 193, 78, 0.4);
+  }
+
+  .card-img-wrap {
+    width: 100%; height: 160px;
+    overflow: hidden; position: relative;
+    border-bottom: 1px solid var(--card-border);
+  }
+
+  .card-img-wrap img {
+    width: 100%; height: 100%; object-fit: cover;
+    transition: transform 0.7s ease, filter 0.7s ease;
+    filter: grayscale(40%) brightness(0.8);
+  }
+
+  .card:hover .card-img-wrap img {
+    transform: scale(1.05);
+    filter: grayscale(0%) brightness(1);
+  }
+
+  .card-content { padding: 24px; }
+
+  .era-date {
+    font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 0.2em;
+    color: var(--accent); margin-bottom: 8px; display: block;
+  }
+
+  .card h2 {
+    font-family: 'Cormorant Garamond', serif; font-size: 28px; font-weight: 500;
+    color: #ffffff; margin-bottom: 12px; line-height: 1.1;
+  }
+
+  .card p { font-size: 13.5px; color: var(--text-muted); margin-bottom: 20px; }
+
+  /* Buttons */
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    text-decoration: none; color: var(--text-main);
+    font-family: 'Space Grotesk', sans-serif; font-size: 12px; font-weight: 500;
+    text-transform: uppercase; padding: 10px 20px;
+    background: rgba(255,255,255,0.05); border: 1px solid var(--card-border);
+    border-radius: 999px; transition: all 0.3s ease;
+  }
+  .btn:hover { background-color: var(--accent); color: var(--bg-black); border-color: var(--accent); }
+
+  /* --- RIGHT COLUMN: MEMORY WALL --- */
+  .memory-wall-column p {
+    font-size: 14.5px;
+    color: var(--text-muted);
+    margin-bottom: 24px;
+  }
+
+  .padlet-wrapper {
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+    border: 1px solid rgba(255,255,255,0.15); 
+    margin-bottom: 20px;
+  }
+
+  .btn-gold-solid {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    gap: 8px;
+    text-decoration: none;
+    color: var(--bg-black);
+    background: linear-gradient(135deg, #ffdf94 0%, var(--accent) 100%);
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 16px 24px;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(242, 193, 78, 0.2);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .btn-gold-solid:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 25px rgba(242, 193, 78, 0.4);
+  }
+
+  .btn-gold-solid:active { transform: scale(0.98); }
+
+  /* --- MOBILE RESPONSIVENESS --- */
+  @media screen and (max-width: 1024px) {
+    .dashboard-container {
+      grid-template-columns: 1fr; /* Stack columns on smaller screens */
+      gap: 80px;
+      padding: 0 20px;
+    }
+    
+    .mobile-jump-link { display: inline-block; }
+  }
+</style>
+</head>
+<body>
+
+  <!-- HERO SECTION -->
+  <header class="hero">
+    <div class="host-avatar-wrap">
+      <img src="sasha.png" alt="Sasha" class="host-avatar" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\\\'http://www.w3.org/2000/svg\\\' viewBox=\\\'0 0 100 100\\\'><circle cx=\\\'50\\\' cy=\\\'50\\\' r=\\\'50\\\' fill=\\\'#333\\\'/><text x=\\\'50\\\' y=\\\'55\\\' font-size=\\\'40\\\' fill=\\\'#fff\\\' text-anchor=\\\'middle\\\'>S</text></svg>'">
+    </div>
+    <h1>The Archive</h1>
+    <p>Sasha's Previous Events</p>
+    
+    <!-- Mobile users see this so they know the Memory Wall exists below -->
+    <a href="#memory-wall" class="mobile-jump-link">↓ Jump to Memory Wall</a>
+  </header>
+
+  <!-- TWO COLUMN DASHBOARD -->
+  <div class="dashboard-container">
+
+    <!-- LEFT COLUMN: THE ERAS -->
+    <div class="eras-column">
+      <h2 class="section-title">Timeline of Eras</h2>
+      
+      <div class="timeline">
+        <!-- ERA II -->
+        <div class="timeline-node">
+          <div class="card">
+            <div class="card-img-wrap">
+              <img src="era2-relationships.jpg" alt="Era II: Relationships" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\\\'http://www.w3.org/2000/svg\\\' width=\\\'600\\\' height=\\\'400\\\'><rect width=\\\'100%\\\' height=\\\'100%\\\' fill=\\\'#1a1025\\\'/><text x=\\\'50%\\\' y=\\\'50%\\\' dominant-baseline=\\\'middle\\\' text-anchor=\\\'middle\\\' fill=\\\'#fff\\\' font-family=\\\'sans-serif\\\'>Picture of Era II Here</text></svg>'">
+            </div>
+            <div class="card-content">
+              <span class="era-date">September 2026</span>
+              <h2>Era II: Relationships</h2>
+              <p>A midnight road trip through Paris. The Driveway, the blooming Midnight Garden, the absolute judgment of the People's Court, and the quiet confessions at the Post Office.</p>
+              <a href="index.html" class="btn">
+                Revisit Era II
+                <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"></path></svg>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- ERA I -->
+        <div class="timeline-node">
+          <div class="card">
+            <div class="card-img-wrap">
+              <img src="era1-fashion.jpg" alt="Era I: Fashion" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\\\'http://www.w3.org/2000/svg\\\' width=\\\'600\\\' height=\\\'400\\\'><rect width=\\\'100%\\\' height=\\\'100%\\\' fill=\\\'#efa3b8\\\'/><text x=\\\'50%\\\' y=\\\'50%\\\' dominant-baseline=\\\'middle\\\' text-anchor=\\\'middle\\\' fill=\\\'#111\\\' font-family=\\\'sans-serif\\\'>Picture of Era I Here</text></svg>'">
+            </div>
+            <div class="card-content">
+              <span class="era-date">August 2026</span>
+              <h2>Era I: Fashion</h2>
+              <p>The debut that started it all. The birth of the Vogue Committee, the chaotic beauty of the gLass cLOsEt, and the anonymous kindness of the Glow Book.</p>
+              <a href="era1-fashion.html" class="btn">
+                Revisit Era I
+                <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"></path></svg>
+              </a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- RIGHT COLUMN: MEMORY WALL -->
+    <div class="memory-wall-column" id="memory-wall">
+      <h2 class="section-title">The Memory Wall</h2>
+      <p>Pin up photos, drop your Instagram, and leave a little note for everyone. This is our digital scrapbook across all eras.</p>
+      
+      <div class="padlet-wrapper">
+        <!-- Made the Padlet height much taller (850px) -->
+        <div class="padlet-embed" style="border:none;box-sizing:border-box;overflow:hidden;position:relative;width:100%;background:#F4F4F4">
+          <p style="padding:0;margin:0">
+            <iframe src="https://padlet.com/embed/nwbq1n7nb2y6cu8t" frameborder="0" allow="camera;microphone;geolocation;display-capture;clipboard-write" style="width:100%;height:850px;display:block;padding:0;margin:0"></iframe>
+          </p>
+        </div>
+      </div>
+
+      <!-- BIG, OBVIOUS LINK BUTTON -->
+      <a href="https://padlet.com/speakingclub_sasha/memory-wall-nwbq1n7nb2y6cu8t" target="_blank" class="btn-gold-solid">
+        Open Memory Wall in Full Screen
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+      </a>
+
+    </div>
+
+  </div>
+
+</body>
+</html>
