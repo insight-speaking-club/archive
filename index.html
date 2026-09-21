@@ -3,338 +3,376 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>The Archive | Sasha's Events</title>
+<title>The Archives | Era II: Relationships</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,400;1,500&family=Space+Grotesk:wght@300;400;500;600&family=Space+Mono:wght@400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
 
 <style>
   :root {
-    --bg-black: #030303;
-    --card-bg: #0a0a0a;
-    --card-border: rgba(255, 255, 255, 0.08);
-    --text-main: #f4e9ff;
-    --text-muted: #8b9bb4;
-    --accent: #f2c14e; 
+    --midnight: #1a0b2e;
+    --pink: #f5a4bf;
+    --gold: #f2c14e;
+    --paper: #fdfbf7;
+    --ink: #111111;
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
 
   body {
-    background-color: var(--bg-black);
-    color: var(--text-main);
-    font-family: 'Space Grotesk', sans-serif;
-    line-height: 1.6;
+    background-color: var(--midnight);
+    color: var(--ink);
+    font-family: 'Space Mono', monospace;
     overflow-x: hidden;
-    background-image: radial-gradient(circle at 50% 0%, #1a1025 0%, transparent 60%);
+    background-image: radial-gradient(circle at 50% 0%, #3a1c5c 0%, transparent 80%);
   }
 
-  /* --- HERO HEADER --- */
-  .hero {
+  /* --- BANNER --- */
+  .banner-strip-container {
+    width: 100%;
+    height: 60px;
+    background: var(--midnight);
+    overflow: hidden;
+    position: relative;
+    border-bottom: 2px solid var(--gold);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+    z-index: 10;
+  }
+
+  .banner-strip-container.bottom {
+    border-bottom: none;
+    border-top: 2px solid var(--gold);
+    margin-top: 60px;
+  }
+
+  .banner-track {
+    display: flex;
+    width: 200%;
+    height: 100%;
+    animation: scroll-banner 20s linear infinite;
+  }
+
+  .banner-track img {
+    height: 100%;
+    object-fit: contain;
+    flex-shrink: 0;
+    opacity: 0.8;
+  }
+
+  @keyframes scroll-banner {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  /* --- HEADER --- */
+  .archive-header {
     text-align: center;
     padding: 60px 20px 40px;
-    position: relative;
   }
 
-  .host-avatar-wrap {
-    width: 64px; height: 64px;
-    margin: 0 auto 16px;
-    border-radius: 50%;
-    padding: 2px;
-    background: linear-gradient(135deg, var(--accent), #d94f8c);
-    box-shadow: 0 4px 20px rgba(242, 193, 78, 0.15);
-  }
-
-  .host-avatar {
-    width: 100%; height: 100%;
-    border-radius: 50%; object-fit: cover;
-    background-color: var(--card-bg);
-    border: 2px solid var(--bg-black);
-  }
-
-  .hero h1 {
+  .archive-header h1 {
     font-family: 'Cormorant Garamond', serif;
-    font-size: 64px; font-weight: 400; font-style: italic;
-    color: #ffffff;
-    text-shadow: 0 4px 20px rgba(0,0,0,0.5);
-    margin-bottom: 8px;
+    font-size: 56px;
+    font-weight: 400;
+    font-style: italic;
+    color: var(--paper);
+    text-shadow: 0 4px 20px rgba(0,0,0,0.8);
+    margin-bottom: 10px;
   }
 
-  .hero p {
-    font-family: 'Space Mono', monospace;
-    font-size: 11px; text-transform: uppercase; letter-spacing: 0.25em;
-    color: var(--text-muted);
-  }
-
-  /* Mobile Jump Link (Hidden on Desktop) */
-  .mobile-jump-link {
-    display: none;
-    margin-top: 20px;
-    font-size: 13px;
-    color: var(--accent);
-    text-decoration: none;
+  .archive-header p {
+    font-size: 12px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
     border: 1px solid rgba(242, 193, 78, 0.4);
-    padding: 8px 20px;
+    display: inline-block;
+    padding: 6px 16px;
     border-radius: 999px;
   }
 
-  /* --- TWO COLUMN DASHBOARD LAYOUT --- */
-  .dashboard-container {
-    display: grid;
-    grid-template-columns: 1fr 1.2fr; /* Eras take slightly less space than Padlet */
-    gap: 60px;
-    max-width: 1400px;
-    margin: 0 auto 80px;
-    padding: 0 40px;
-    align-items: start;
-  }
-
-  .section-title {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 38px;
-    font-style: italic;
-    font-weight: 400;
-    color: #ffffff;
-    margin-bottom: 12px;
-    border-bottom: 1px solid var(--card-border);
-    padding-bottom: 16px;
-  }
-
-  /* --- LEFT COLUMN: TIMELINE --- */
+  /* --- THE TIMELINE --- */
   .timeline {
     position: relative;
-    padding-left: 24px;
-    margin-top: 30px;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
   }
 
-  /* Single-sided line for the column layout */
-  .timeline::after {
-    content: ''; position: absolute;
+  /* The center line */
+  .timeline::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
     width: 2px;
-    background: linear-gradient(to bottom, rgba(242, 193, 78, 0.6) 0%, rgba(242, 193, 78, 0.1) 100%);
-    top: 10px; bottom: 0; left: 0;
+    background: linear-gradient(to bottom, transparent, rgba(242, 193, 78, 0.6) 10%, rgba(242, 193, 78, 0.6) 90%, transparent);
+    transform: translateX(-50%);
   }
 
-  .timeline-node {
+  .timeline-item {
     position: relative;
-    margin-bottom: 40px;
-    padding-left: 30px;
+    width: 100%;
+    margin-bottom: 60px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
   }
 
-  /* Glowing dot on the left line */
-  .timeline-node::before {
-    content: ''; position: absolute;
-    width: 12px; height: 12px;
-    left: -29px; /* Pull it back over the line */
-    top: 15px;
-    background-color: var(--bg-black);
-    border: 2px solid var(--accent);
-    border-radius: 50%;
-    z-index: 1;
-    box-shadow: 0 0 10px rgba(242, 193, 78, 0.6);
-    transition: box-shadow 0.3s ease, transform 0.3s ease;
+  .timeline-item:nth-child(even) {
+    flex-direction: row-reverse;
   }
 
-  .timeline-node:hover::before {
-    box-shadow: 0 0 20px rgba(242, 193, 78, 1);
-    transform: scale(1.3);
-    background-color: var(--accent);
-  }
-
-  /* Era Cards */
-  .card {
-    background-color: rgba(15, 15, 15, 0.6);
-    backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
-    border: 1px solid var(--card-border);
-    border-radius: 16px; overflow: hidden;
-    transition: transform 0.4s ease, border-color 0.4s ease;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-  }
-
-  .card:hover {
-    transform: translateY(-5px);
-    border-color: rgba(242, 193, 78, 0.4);
-  }
-
-  .card-img-wrap {
-    width: 100%; height: 160px;
-    overflow: hidden; position: relative;
-    border-bottom: 1px solid var(--card-border);
-  }
-
-  .card-img-wrap img {
-    width: 100%; height: 100%; object-fit: cover;
-    transition: transform 0.7s ease, filter 0.7s ease;
-    filter: grayscale(40%) brightness(0.8);
-  }
-
-  .card:hover .card-img-wrap img {
-    transform: scale(1.05);
-    filter: grayscale(0%) brightness(1);
-  }
-
-  .card-content { padding: 24px; }
-
-  .era-date {
-    font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 0.2em;
-    color: var(--accent); margin-bottom: 8px; display: block;
-  }
-
-  .card h2 {
-    font-family: 'Cormorant Garamond', serif; font-size: 28px; font-weight: 500;
-    color: #ffffff; margin-bottom: 12px; line-height: 1.1;
-  }
-
-  .card p { font-size: 13.5px; color: var(--text-muted); margin-bottom: 20px; }
-
-  /* Buttons */
-  .btn {
-    display: inline-flex; align-items: center; gap: 8px;
-    text-decoration: none; color: var(--text-main);
-    font-family: 'Space Grotesk', sans-serif; font-size: 12px; font-weight: 500;
-    text-transform: uppercase; padding: 10px 20px;
-    background: rgba(255,255,255,0.05); border: 1px solid var(--card-border);
-    border-radius: 999px; transition: all 0.3s ease;
-  }
-  .btn:hover { background-color: var(--accent); color: var(--bg-black); border-color: var(--accent); }
-
-  /* --- RIGHT COLUMN: MEMORY WALL --- */
-  .memory-wall-column p {
-    font-size: 14.5px;
-    color: var(--text-muted);
-    margin-bottom: 24px;
-  }
-
-  .padlet-wrapper {
-    border-radius: 12px;
-    overflow: hidden;
-    box-shadow: 0 20px 50px rgba(0,0,0,0.6);
-    border: 1px solid rgba(255,255,255,0.15); 
-    margin-bottom: 20px;
-  }
-
-  .btn-gold-solid {
+  /* The timeline dot */
+  .timeline-item::before {
+    content: '✧'; 
+    position: absolute;
+    left: 50%;
+    top: 20px;
+    transform: translateX(-50%);
+    font-size: 20px;
+    color: var(--gold);
+    background: var(--midnight);
+    width: 36px;
+    height: 36px;
     display: flex;
     align-items: center;
     justify-content: center;
+    border-radius: 50%;
+    border: 2px solid var(--gold);
+    box-shadow: 0 0 15px rgba(242, 193, 78, 0.4);
+    z-index: 2;
+  }
+
+  /* --- SCRAPBOOK CARDS --- */
+  .scrap-card {
+    width: 45%;
+    background: var(--paper);
+    border: 1px solid rgba(242, 193, 78, 0.3);
+    padding: 24px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+    position: relative;
+    transition: transform 0.3s ease, border-color 0.3s ease;
+    border-radius: 12px;
+  }
+
+  .timeline-item:nth-child(odd) .scrap-card { transform: rotate(-1.5deg); }
+  .timeline-item:nth-child(even) .scrap-card { transform: rotate(1.5deg); }
+
+  .scrap-card:hover {
+    transform: scale(1.03) rotate(0deg);
+    border-color: var(--gold);
+    z-index: 5;
+  }
+
+  /* "Tape" effect */
+  .scrap-card::after {
+    content: '';
+    position: absolute;
+    top: -12px;
+    left: 50%;
+    transform: translateX(-50%) rotate(-3deg);
+    width: 70px;
+    height: 25px;
+    background: rgba(242, 193, 78, 0.15);
+    border: 1px solid rgba(242, 193, 78, 0.3);
+    backdrop-filter: blur(2px);
+    z-index: 3;
+  }
+
+  .scrap-photo {
     width: 100%;
-    gap: 8px;
-    text-decoration: none;
-    color: var(--bg-black);
-    background: linear-gradient(135deg, #ffdf94 0%, var(--accent) 100%);
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 15px;
+    height: 180px;
+    object-fit: cover;
+    display: block;
+    border-radius: 8px;
+    margin-bottom: 16px;
+    background: #1a0b2e;
+    border: 1px solid rgba(0,0,0,0.1);
+  }
+
+  .card-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 28px;
     font-weight: 600;
+    color: var(--midnight);
+    margin-bottom: 8px;
+    line-height: 1.1;
+  }
+
+  .card-desc {
+    font-size: 13px;
+    color: #555;
+    line-height: 1.5;
+    margin-bottom: 20px;
+  }
+
+  /* --- BUTTONS & LINKS --- */
+  .btn-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .zine-btn {
+    display: inline-block;
+    background: var(--midnight);
+    color: var(--paper);
+    text-decoration: none;
+    font-weight: bold;
+    text-transform: uppercase;
+    text-align: center;
+    padding: 10px 15px;
+    border: 1px solid var(--gold);
+    border-radius: 6px;
+    transition: all 0.2s ease;
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+  }
+
+  .zine-btn:hover {
+    background: var(--gold);
+    color: var(--midnight);
+  }
+
+  .zine-btn.alt {
+    background: transparent;
+    color: var(--midnight);
+    border: 1px solid var(--midnight);
+  }
+
+  .zine-btn.alt:hover {
+    background: var(--midnight);
+    color: var(--paper);
+  }
+
+  /* --- RETURN BUTTON --- */
+  .return-archive-wrap {
+    text-align: center;
+    margin: 60px 20px 40px;
+  }
+
+  .return-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: transparent;
+    color: var(--paper);
+    text-decoration: none;
+    font-family: 'Space Mono', monospace;
+    font-size: 13px;
+    font-weight: bold;
     text-transform: uppercase;
     letter-spacing: 0.05em;
-    padding: 16px 24px;
-    border-radius: 12px;
-    box-shadow: 0 8px 20px rgba(242, 193, 78, 0.2);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    padding: 14px 28px;
+    border-radius: 999px;
+    border: 1px solid rgba(242, 193, 78, 0.5);
+    transition: all 0.3s ease;
   }
 
-  .btn-gold-solid:hover {
+  .return-btn:hover {
+    background: var(--gold);
+    color: var(--midnight);
+    border-color: var(--gold);
     transform: translateY(-2px);
-    box-shadow: 0 12px 25px rgba(242, 193, 78, 0.4);
   }
-
-  .btn-gold-solid:active { transform: scale(0.98); }
 
   /* --- MOBILE RESPONSIVENESS --- */
-  @media screen and (max-width: 1024px) {
-    .dashboard-container {
-      grid-template-columns: 1fr; /* Stack columns on smaller screens */
-      gap: 80px;
-      padding: 0 20px;
+  @media (max-width: 768px) {
+    .timeline::before { left: 20px; }
+    .timeline-item {
+      flex-direction: column !important;
+      align-items: flex-end;
     }
-    
-    .mobile-jump-link { display: inline-block; }
+    .timeline-item::before { left: 20px; }
+    .scrap-card { width: calc(100% - 50px); }
+    .archive-header h1 { font-size: 42px; }
   }
 </style>
 </head>
 <body>
 
-  <!-- HERO SECTION -->
-  <header class="hero">
-    <div class="host-avatar-wrap">
-      <img src="sasha.png" alt="Sasha" class="host-avatar" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\\\'http://www.w3.org/2000/svg\\\' viewBox=\\\'0 0 100 100\\\'><circle cx=\\\'50\\\' cy=\\\'50\\\' r=\\\'50\\\' fill=\\\'#333\\\'/><text x=\\\'50\\\' y=\\\'55\\\' font-size=\\\'40\\\' fill=\\\'#fff\\\' text-anchor=\\\'middle\\\'>S</text></svg>'">
+  <!-- Top Banner -->
+  <div class="banner-strip-container">
+    <div class="banner-track">
+      <img src="Untitled148_20260912111554.png" alt="Sasha" onerror="this.style.display='none'">
+      <img src="Untitled148_20260912111554.png" alt="Sasha" onerror="this.style.display='none'">
+      <img src="Untitled148_20260912111554.png" alt="Sasha" onerror="this.style.display='none'">
+      <img src="Untitled148_20260912111554.png" alt="Sasha" onerror="this.style.display='none'">
     </div>
-    <h1>The Archive</h1>
-    <p>Sasha's Previous Events</p>
-    
-    <!-- Mobile users see this so they know the Memory Wall exists below -->
-    <a href="#memory-wall" class="mobile-jump-link">↓ Jump to Memory Wall</a>
-  </header>
+  </div>
 
-  <!-- TWO COLUMN DASHBOARD -->
-  <div class="dashboard-container">
+  <div class="archive-header">
+    <h1>Era II: Relationships</h1>
+    <p>OCTOBER 2026 • THE CITY OF LOVE TOUR</p>
+  </div>
 
-    <!-- LEFT COLUMN: THE ERAS -->
-    <div class="eras-column">
-      <h2 class="section-title">Timeline of Eras</h2>
-      
-      <div class="timeline">
-        <!-- ERA II -->
-        <div class="timeline-node">
-          <div class="card">
-            <div class="card-img-wrap">
-              <img src="era2-relationships.jpg" alt="Era II: Relationships" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\\\'http://www.w3.org/2000/svg\\\' width=\\\'600\\\' height=\\\'400\\\'><rect width=\\\'100%\\\' height=\\\'100%\\\' fill=\\\'#1a1025\\\'/><text x=\\\'50%\\\' y=\\\'50%\\\' dominant-baseline=\\\'middle\\\' text-anchor=\\\'middle\\\' fill=\\\'#fff\\\' font-family=\\\'sans-serif\\\'>Picture of Era II Here</text></svg>'">
-            </div>
-            <div class="card-content">
-              <span class="era-date">September 2026</span>
-              <h2>Era II: Relationships</h2>
-              <p>A midnight road trip through Paris. The Driveway, the blooming Midnight Garden, the absolute judgment of the People's Court, and the quiet confessions at the Post Office.</p>
-              <a href="index.html" class="btn">
-                Revisit Era II
-                <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"></path></svg>
-              </a>
-            </div>
-          </div>
+  <div class="timeline">
+
+    <!-- Location 1: Dauphine Square -->
+    <div class="timeline-item">
+      <div class="scrap-card">
+        <img src="dauphine.jpg" alt="Dauphine Square" class="scrap-photo" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'400\' height=\'300\'><rect width=\'100%\' height=\'100%\' fill=\'#1a0b2e\'/><text x=\'50%\' y=\'50%\' dominant-baseline=\'middle\' text-anchor=\'middle\' fill=\'#f2c14e\' font-family=\'monospace\' font-size=\'16\'>Dauphine Square</text></svg>'">
+        <h2 class="card-title">Dauphine Square</h2>
+        <p class="card-desc">Our starting line, tucked into a hidden square on the Seine. While we wait for those with tragic time management, check the passenger list and play a quick round of "Red Flag Rally".</p>
+        <div class="btn-group">
+          <a href="https://insight-speaking-club.github.io/relationships/" class="zine-btn">Revisit the Tour</a>
         </div>
+      </div>
+    </div>
 
-        <!-- ERA I -->
-        <div class="timeline-node">
-          <div class="card">
-            <div class="card-img-wrap">
-              <img src="era1-fashion.jpg" alt="Era I: Fashion" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\\\'http://www.w3.org/2000/svg\\\' width=\\\'600\\\' height=\\\'400\\\'><rect width=\\\'100%\\\' height=\\\'100%\\\' fill=\\\'#efa3b8\\\'/><text x=\\\'50%\\\' y=\\\'50%\\\' dominant-baseline=\\\'middle\\\' text-anchor=\\\'middle\\\' fill=\\\'#111\\\' font-family=\\\'sans-serif\\\'>Picture of Era I Here</text></svg>'">
-            </div>
-            <div class="card-content">
-              <span class="era-date">August 2026</span>
-              <h2>Era I: Fashion</h2>
-              <p>The debut that started it all. The birth of the Vogue Committee, the chaotic beauty of the gLass cLOsEt, and the anonymous kindness of the Glow Book.</p>
-              <a href="era1-fashion.html" class="btn">
-                Revisit Era I
-                <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"></path></svg>
-              </a>
-            </div>
-          </div>
+    <!-- Location 2: Luxembourg Garden -->
+    <div class="timeline-item">
+      <div class="scrap-card">
+        <img src="luxembourg.jpg" alt="Luxembourg Garden" class="scrap-photo" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'400\' height=\'300\'><rect width=\'100%\' height=\'100%\' fill=\'#1a0b2e\'/><text x=\'50%\' y=\'50%\' dominant-baseline=\'middle\' text-anchor=\'middle\' fill=\'#f2c14e\' font-family=\'monospace\' font-size=\'16\'>Luxembourg Garden</text></svg>'">
+        <h2 class="card-title">The Luxembourg Garden</h2>
+        <p class="card-desc">First stop. The heavy iron gates of this famous garden are locked at sundown, but we have a way in. Once we pull in and the doors open, step out and pick a flower with your partner.</p>
+        <div class="btn-group">
+          <a href="https://insight-speaking-club.github.io/relationships/" class="zine-btn">Revisit the Tour</a>
         </div>
-
       </div>
     </div>
 
-    <!-- RIGHT COLUMN: MEMORY WALL -->
-    <div class="memory-wall-column" id="memory-wall">
-      <h2 class="section-title">The Memory Wall</h2>
-      <p>Pin up photos, drop your Instagram, and leave a little note for everyone. This is our digital scrapbook across all eras.</p>
-      
-      <div class="padlet-wrapper">
-        <!-- Made the Padlet height much taller (850px) -->
-        <div class="padlet-embed" style="border:none;box-sizing:border-box;overflow:hidden;position:relative;width:100%;background:#F4F4F4">
-          <p style="padding:0;margin:0">
-            <iframe src="https://padlet.com/embed/nwbq1n7nb2y6cu8t" frameborder="0" allow="camera;microphone;geolocation;display-capture;clipboard-write" style="width:100%;height:850px;display:block;padding:0;margin:0"></iframe>
-          </p>
+    <!-- Location 3: Palace of Justice -->
+    <div class="timeline-item">
+      <div class="scrap-card">
+        <img src="justice.jpg" alt="Palace of Justice" class="scrap-photo" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'400\' height=\'300\'><rect width=\'100%\' height=\'100%\' fill=\'#1a0b2e\'/><text x=\'50%\' y=\'50%\' dominant-baseline=\'middle\' text-anchor=\'middle\' fill=\'#f2c14e\' font-family=\'monospace\' font-size=\'16\'>Palace of Justice</text></svg>'">
+        <h2 class="card-title">The Palace of Justice</h2>
+        <p class="card-desc">Second stop. We regroup here after the garden. It is the historic courthouse of Paris, locked until we arrive, so get ready to take your seat and cast your verdicts.</p>
+        <div class="btn-group">
+          <a href="https://insight-speaking-club.github.io/relationships/" class="zine-btn">Revisit the Tour</a>
         </div>
       </div>
-
-      <!-- BIG, OBVIOUS LINK BUTTON -->
-      <a href="https://padlet.com/speakingclub_sasha/memory-wall-nwbq1n7nb2y6cu8t" target="_blank" class="btn-gold-solid">
-        Open Memory Wall in Full Screen
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
-      </a>
-
     </div>
 
+    <!-- Location 4: Louvre Post Office -->
+    <div class="timeline-item">
+      <div class="scrap-card">
+        <img src="postoffice.jpg" alt="Louvre Post Office" class="scrap-photo" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'400\' height=\'300\'><rect width=\'100%\' height=\'100%\' fill=\'#1a0b2e\'/><text x=\'50%\' y=\'50%\' dominant-baseline=\'middle\' text-anchor=\'middle\' fill=\'#f2c14e\' font-family=\'monospace\' font-size=\'16\'>The Louvre Post Office</text></svg>'">
+        <h2 class="card-title">The Louvre Post Office</h2>
+        <p class="card-desc">Our final stop. Historically the only post office in the city to stay open all night, making it the perfect place to send a late night love letter. What kind of letter will you write? You'll find out once you're inside.</p>
+        <div class="btn-group">
+          <a href="https://insight-speaking-club.github.io/relationships/" class="zine-btn">Revisit the Tour</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Return Button -->
+  <div class="return-archive-wrap">
+    <a href="archives.html" class="return-btn">← Back to The Archive</a>
+  </div>
+
+  <!-- Bottom Banner -->
+  <div class="banner-strip-container bottom">
+    <div class="banner-track">
+      <img src="Untitled148_20260912111554.png" alt="Sasha" onerror="this.style.display='none'">
+      <img src="Untitled148_20260912111554.png" alt="Sasha" onerror="this.style.display='none'">
+      <img src="Untitled148_20260912111554.png" alt="Sasha" onerror="this.style.display='none'">
+      <img src="Untitled148_20260912111554.png" alt="Sasha" onerror="this.style.display='none'">
+    </div>
   </div>
 
 </body>
